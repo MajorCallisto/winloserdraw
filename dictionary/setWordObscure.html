@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title><?php echo "$adjective $noun"; ?></title>
+<style>
+	@import url(https://fonts.googleapis.com/css?family=Squada+One);
+	html, body{
+		padding:0;
+		margin:0;	
+	}
+	html{
+		text-transform:capitalize;
+		font-family: 'Squada One', sans;
+	}
+	h1{
+		width:90%;
+		position:absolute;
+		top:50%;
+		left:50%;
+		transform:translate(-50%, -50%);
+		-webkit-transform:translate(-50%, -50%);
+		text-align:center;
+		font-size:8em;
+		line-height:1em;
+		height:50%;
+		color:#AAA;
+	}
+	h1 .noun{
+		color:#333;	
+	}
+</style>
+<script>
+var responsObj;
+	window.onclick = function(){
+//		window.location.reload();
+//		getNewWord();
+	}
+	window.onload = function(){
+		if (window.XMLHttpRequest) {
+			// code for IE7+, Firefox, Chrome, Opera, Safari
+			xmlhttp = new XMLHttpRequest();
+		} else {
+			// code for IE6, IE5
+			xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.onreadystatechange = onResponse;
+		getNewWord();	
+	}
+	window.addEventListener("keydown", function(e){
+		console.log(e.keyCode);
+		switch (e.keyCode){
+			case 65://A - Common
+				wordIsObscure(false, responsObj.adjectiveId);
+			break;
+			case 68://D - Obscure
+				wordIsObscure(true, responsObj.adjectiveId);
+			break;
+			case 97://1 - Obscure
+			case 49://1 - Obscure
+				wordIsObscure(true, responsObj.nounId);
+			break;
+			case 48://0 - Common
+			case 96://0 - Common
+				wordIsObscure(false, responsObj.nounId);
+			break;
+		}
+	});
+	function wordIsObscure(isObscure, id){
+		var isObscure = (isObscure)?1:0;
+		xmlhttp.open("GET","getThing.php?isObscure="+isObscure+"&idDictionary="+id,true);
+		xmlhttp.send();
+	}
+	function getNewWord() {
+		xmlhttp.open("GET","getThing.php",true);
+		xmlhttp.send();
+	}
+	function onResponse(){
+			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+				responsObj = JSON.parse(xmlhttp.responseText);
+				document.getElementById("results").innerHTML = responsObj.adjective + " <span class=\"noun\">"+responsObj.noun+"</span>";
+			}
+	}
+</script>
+</head>
+<body>
+<h1 id="results"></h1>
+<footer>Evaluate Adjective: A-Common D-Obscure<br>Evaluate Noun: 0-Common 1-Obscure</footer>
+</body>
+</html>
