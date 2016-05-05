@@ -6,6 +6,6 @@
 
 var str = "Player 2";
 
-var b = new File("/Users/James/Documents/player.txt");
+var b = new File("C\:\\Users\\blacksanta_69\\Documents\\winloserdraw\\player.txt");
 b.open("w", "TEXT");
 b.write(str);

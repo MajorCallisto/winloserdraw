@@ -4,6 +4,7 @@
 					   xmlns:mx="library://ns.adobe.com/flex/mx"
 					   alwaysInFront="true"
 					   invoke="onInvoke(event)"
+					   showStatusBar="false"
 					   creationComplete="init()">
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
@@ -26,11 +27,13 @@
 			}
 			
 			private function updateTimer(evt:TimerEvent):void {
-				var playerFile:File = File.applicationStorageDirectory;
-				playerFile = playerFile.resolvePath("player.txt");
+				var playerFile:File = File.documentsDirectory;
+				playerFile = playerFile.resolvePath("winloserdraw\\player.txt");
 				var stream:FileStream = new FileStream();
 				stream.open(playerFile, FileMode.READ);
 				currentPlayer.text = stream.readUTFBytes(stream.bytesAvailable);
+				stream.close();
+				
 			}
 			
 			public function onInvoke(invokeEvent:InvokeEvent):void {
@@ -38,24 +41,48 @@
 			 	var now:String = new Date().toTimeString(); 
 				logEvent("Invoke event received: " + now); 
 				
-				var playerFile = File.applicationStorageDirectory;
-				playerFile = playerFile.resolvePath("player.txt");
+				var playerFile = File.documentsDirectory;
+				playerFile = playerFile.resolvePath("winloserdraw\\player.txt");
+				trace (playerFile);
 				var stream = new FileStream();
 				stream.open (playerFile, FileMode.WRITE);
-				stream.writeUTFBytes("hello");
-				
+				stream.writeUTFBytes("Test Player");
+				stream.close();
+
 				if (invokeEvent.currentDirectory != null){ 
 					logEvent("Current directory=" + invokeEvent.currentDirectory.nativePath); 
 				} else { 
 					logEvent("--no directory information available--"); 
 				} 
 				
+				/*
 				if (invokeEvent.arguments.length > 0){ 
 					logEvent("Arguments: " + invokeEvent.arguments.toString());
 					currentPlayer.text = invokeEvent.arguments.toString();
 				} else { 
 					currentPlayer.text = "No arguments";
 				} 
+				*/
+				
+				var request:URLRequest = new URLRequest("http://localhost/winloserdraw/dictionary/getThing.php?obscureRating=0");
+				var loader:URLLoader;
+				loader = new URLLoader();
+				loader.addEventListener(Event.COMPLETE, function(e:Event){
+					var json:Object = JSON.parse(e.target.data);
+					theme.text = json["adjective"] + " " + json["noun"];
+					
+				});
+				
+				try {
+					loader.load(request);
+				}
+				catch (error:SecurityError)
+				{
+					trace("A SecurityError has occurred.");
+				}
+				
+				
+				
 				
 				//var file:File = File.applicationStorageDirectory.resolvePath("test.txt");
 				
@@ -70,7 +97,7 @@
 	</fx:Script>
 	
 	
-	<mx:Text id="currentPlayer" text="Player 1" fontSize="36" textAlign="center" width="100%" height="200">
-		
-	</mx:Text>
+	<mx:Text id="currentPlayer" text="Player 1" fontSize="36" textAlign="center" width="100%" height="200"></mx:Text>
+	<mx:Text id="theme" text="theme" fontSize="36" textAlign="center" width="100%" height="200" y="50"></mx:Text>
+
 </s:WindowedApplication>
