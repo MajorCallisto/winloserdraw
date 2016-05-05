@@ -35,6 +35,7 @@ void loop() {
       secondsElapsed = 0;
       regOne.allOff();
       playerTurnA *= -1;
+      changePlayer();
       for (int i=0; i<20; i++){
         if (playerTurnA){
           regOne.pinOn(i);
@@ -46,5 +47,9 @@ void loop() {
       secondsElapsed --;
     } 
   }
+}
+function changePlayer(){
+//Add functionality for shortcut keys
+}
 }
 
