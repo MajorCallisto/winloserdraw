@@ -20,8 +20,30 @@ void setup() {
 //Serial.begin(9600);
 }
 
-void loop() {  
-
+void loop() {
+  /*
+regOne.allOff();
+for (int i = 0; i <21; i++){
+        if (random(2) <1){
+            regOne.pinOn(i);
+         }
+}
+ delay(50);
+return;
+for (int i = 20; i >0; i--){
+        regOne.pinOff(i);
+        delay(20);
+}
+for (int i = 20; i >0; i--){
+        regOne.pinOff(i);
+        delay(20);
+}
+for (int i = 1; i <21; i++){
+        regOne.pinOn(i);
+        delay(20);
+}
+return;
+*/
   unsigned long currentMillis = millis();
 
   if (currentMillis - previousMillis >= interval) {
@@ -48,8 +70,8 @@ void loop() {
     } 
   }
 }
-function changePlayer(){
+void changePlayer(){
 //Add functionality for shortcut keys
-}
+
 }
 
