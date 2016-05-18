@@ -12,24 +12,53 @@ int clockPin = 12;
 shiftOutX regOne(latchPin, dataPin, clockPin, MSBFIRST, 5); 
 
 unsigned long previousMillis = 0;
-const long interval = 1000;
+const long interval = 500;
 
 boolean playerTurnA = false;
 int secondsElapsed = 0;
 void setup() {
-//Serial.begin(9600);
+  Serial.begin(9600);
+  previousMillis = millis();
+   regOne.allOn();
 }
 
+boolean player_00Active = true;
+int activeLight = 1;
 void loop() {
-  /*
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis >= interval) {
+    previousMillis = currentMillis;
+    if (player_00Active){
+        regOne.pinOff(activeLight);
+    }else{
+     regOne.pinOff(activeLight+20);
+    }
+    activeLight ++;
+    if (activeLight == 21){
+      activeLight = 1;
+      regOne.allOn();
+      player_00Active = !player_00Active;
+    }
+    Serial.println(activeLight);
+  }
+  return;
 regOne.allOff();
-for (int i = 0; i <21; i++){
-        if (random(2) <1){
+for (int i = 1; i <41; i++){
+        //if (random(2) <1){
             regOne.pinOn(i);
-         }
+         //}
+         delay(50);
+}
+delay(100);
+for (int i = 41; i >0; i--){
+        //if (random(2) <1){
+            regOne.pinOff(i);
+         //}
+         delay(50);
 }
  delay(50);
 return;
+/*
 for (int i = 20; i >0; i--){
         regOne.pinOff(i);
         delay(20);
@@ -44,7 +73,6 @@ for (int i = 1; i <21; i++){
 }
 return;
 */
-  unsigned long currentMillis = millis();
 
   if (currentMillis - previousMillis >= interval) {
     previousMillis = currentMillis;
