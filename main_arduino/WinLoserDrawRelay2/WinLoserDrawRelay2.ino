@@ -1,4 +1,14 @@
+//Modified ShiftOutX library
+//http://playground.arduino.cc/Main/ShiftOutX#Download
+//Remarked out ShiftOutX.h lines 109 and 110
+
+#include <ShiftOutX.h>
+#include <ShiftPinNo.h> 
 #include <Adafruit_NeoPixel.h>
+//
+int latchPin = 3;
+int dataPin = 11;
+int clockPin = 12;
 
 // Basic 4 Realy board connection
 // Each relay is turned on for 2 seconds and then off.
@@ -17,6 +27,17 @@
 // NeoPixel
 int COLOR_DIAL_PIN = 5;
 #define NUMPIXELS 2
+
+shiftOutX regOne(latchPin, dataPin, clockPin, MSBFIRST, 5); 
+
+unsigned long previousMillis = 0;
+const long interval = 500;
+boolean player_00Active = true;
+int activeLight = 1;
+
+boolean playerTurnA = false;
+int secondsElapsed = 0;
+
 // When we setup the NeoPixel library, we tell it how many pixels, and which pin to use to send signals.
 // Note that for older NeoPixel strips you might need to change the third parameter--see the strandtest
 // example for more information on possible values.
@@ -88,6 +109,12 @@ void setup()
   
   Serial.begin(9600);
   Keyboard.begin();
+
+  
+  //Serial.begin(9600);
+  //Setup Lights
+  previousMillis = millis();
+  regOne.allOn();
 }
  
  void loop()
@@ -133,6 +160,7 @@ void setup()
   pixels.setPixelColor(currentPlayerPixel, pixels.Color(redValue,greenValue,blueValue));
   pixels.show();
   
+  updateLight();
 }
 
 void switchPlayers(){
@@ -153,3 +181,27 @@ void switchPlayers(){
         pixels.setPixelColor(1, pixels.Color(0,0,0));
         pixels.show();  
 }
+
+void updateLight(){
+  
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis >= interval) {
+    previousMillis = currentMillis;
+    if (player_00Active){
+     regOne.pinOff(activeLight);
+    }else{
+     regOne.pinOff(activeLight+20);
+    }
+    activeLight ++;
+    if (activeLight == 22){
+      changePlayer();
+    }
+  }
+}
+void changePlayer(){
+      //Update Lights
+      activeLight = 1;
+      regOne.allOn();
+      player_00Active = !player_00Active;
+}
+

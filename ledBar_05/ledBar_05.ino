@@ -5,7 +5,7 @@
 #include <ShiftOutX.h>
 #include <ShiftPinNo.h> 
 
-int latchPin = 8;
+int latchPin = 3;
 int dataPin = 11;
 int clockPin = 12;
 
@@ -34,7 +34,7 @@ void updateLight(){
   if (currentMillis - previousMillis >= interval) {
     previousMillis = currentMillis;
     if (player_00Active){
-        regOne.pinOff(activeLight);
+     regOne.pinOff(activeLight);
     }else{
      regOne.pinOff(activeLight+20);
     }
