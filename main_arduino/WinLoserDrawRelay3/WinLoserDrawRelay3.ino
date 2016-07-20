@@ -46,21 +46,22 @@ int secondsElapsed = 0;
 Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, COLOR_DIAL_PIN, NEO_GRB + NEO_KHZ800);
 
 int potPin = A0;
-int pot2Pin = A1;
+int pot2Pin = A5;
 
 int val = 0;
 int lastVal = 0;
 
 int colorArray[][6] = {    // colors for the color selector
-                    {255,255,255,false,false,KEY_F10},  //color1
-                    {0,255,255,false,false,KEY_F2},  //color2
-                    {127,127,127,false,false,KEY_F11},  //color3
-                    {255,157,22,false,false,KEY_F4},  //color4
-                    {255,117,15,false,false,KEY_F5},  //color5
-                    {255,75,10,false,false,KEY_F6},   //color6
-                    {255,0,0,false,false,KEY_F7},    //color7
-                    {0,255,0,false,false,KEY_F8},  //color8
-                    {0,0,255,false,false,KEY_F9}   //color9       
+                    {255,255,255,false,false,KEY_F10},  //color1  // white
+                    {128,128,128,false,false,KEY_F2},  //color2       // grey
+                    {0,255,0,false,false,KEY_F11},  //color3      // green
+                    {0,0,255,false,false,KEY_F4},  //color4       // blue
+                    {255,255,0,false,false,KEY_F5},  //color5     // yellow
+                    {255,0,255,false,false,KEY_F6},   //color6    // magenta
+                    {0,255,255,false,false,KEY_F7},    //color7   // cyan
+                    {255,128,0,false,false,KEY_F8},  //color8     // orange
+                    {255,0,0,false,false,KEY_F9},   //color9         // red
+                    {255,0,0,false,false,KEY_F9}   //color9         // red
                    };
  
 void setup()
@@ -73,6 +74,9 @@ void setup()
   pinMode(RELAY2, OUTPUT);
   pinMode(RELAY3, OUTPUT);
   pinMode(RELAY4, OUTPUT);
+
+  pinMode(potPin, INPUT);
+  pinMode(pot2Pin, INPUT);
   
   Serial.begin(9600);
   Keyboard.begin();
@@ -98,13 +102,12 @@ void setup()
   updateNeoPixel(false);
 }
 void updateNeoPixel(boolean forceUpdate){
-  val = (player_00Active == true) ? analogRead(potPin) : analogRead(pot2Pin);
-  
-  int mappedVal = map(val, 0, 1022, 0, 8);
-
   //set the inactive pixel to "off"
-  pixels.setPixelColor((player_00Active == true) ? 1 : 0, pixels.Color(0,0,0 ));
+  pixels.setPixelColor((player_00Active == true) ? 0 : 1, pixels.Color(0,0,0 ));
   pixels.show();
+  
+  val = (player_00Active == true) ? analogRead(potPin) : analogRead(pot2Pin);
+  int mappedVal = map(val, 0, 1023, 0, 9);
   
   if (mappedVal == lastVal && forceUpdate == false) return;
   Serial.println("+++++++++++++++++++++");
@@ -134,7 +137,7 @@ void updateNeoPixel(boolean forceUpdate){
   Serial.print(blueValue);
 
   // set the active pixel colour.
-  pixels.setPixelColor((player_00Active == true) ? 0 : 1, pixels.Color(redValue,greenValue,blueValue));
+  pixels.setPixelColor((player_00Active == true) ? 1 : 0, pixels.Color(redValue,greenValue,blueValue));
   pixels.show();
 }
 void updateLight(){

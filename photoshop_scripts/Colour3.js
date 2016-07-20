@@ -1,3 +1,3 @@
 #target photoshop  
 #include "./ColorFunctions.js"
-setForegroundColor(255,196,30);
+setForegroundColor(0,255,0);
