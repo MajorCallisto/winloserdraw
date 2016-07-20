@@ -100,8 +100,9 @@ void setup()
 void updateNeoPixel(boolean forceUpdate){
   val = (player_00Active == true) ? analogRead(potPin) : analogRead(pot2Pin);
   
-  int mappedVal = map(val, 0, 1022, 0, 35);
-  
+  int mappedVal = map(val, 0, 1022, 0, 8);
+
+  //set the inactive pixel to "off"
   pixels.setPixelColor((player_00Active == true) ? 1 : 0, pixels.Color(0,0,0 ));
   pixels.show();
   
@@ -132,7 +133,7 @@ void updateNeoPixel(boolean forceUpdate){
   Serial.print(", ");
   Serial.print(blueValue);
 
-  pixels.setPixelColor((player_00Active == true) ? 1 : 0, pixels.Color(0,0,0 ));
+  // set the active pixel colour.
   pixels.setPixelColor((player_00Active == true) ? 0 : 1, pixels.Color(redValue,greenValue,blueValue));
   pixels.show();
 }
