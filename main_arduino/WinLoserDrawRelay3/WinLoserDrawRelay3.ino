@@ -52,16 +52,16 @@ int val = 0;
 int lastVal = 0;
 
 int colorArray[][6] = {    // colors for the color selector
-                    {255,255,255,false,false,KEY_F10},  //color1  // white
-                    {128,128,128,false,false,KEY_F2},  //color2       // grey
-                    {0,255,0,false,false,KEY_F11},  //color3      // green
-                    {0,0,255,false,false,KEY_F4},  //color4       // blue
-                    {255,255,0,false,false,KEY_F5},  //color5     // yellow
-                    {255,0,255,false,false,KEY_F6},   //color6    // magenta
-                    {0,255,255,false,false,KEY_F7},    //color7   // cyan
-                    {255,128,0,false,false,KEY_F8},  //color8     // orange
-                    {255,0,0,false,false,KEY_F9},   //color9         // red
-                    {255,0,0,false,false,KEY_F9}   //color9         // red
+                    {255,255,255,true,false,KEY_F2},  //color1  // white
+                    {128,128,128,false,false,KEY_F3},  //color2       // grey
+                    {0,255,0,false,false,KEY_F4},  //color3      // green
+                    {0,0,255,false,false,KEY_F5},  //color4       // blue
+                    {255,255,0,false,false,KEY_F6},  //color5     // yellow
+                    {255,0,255,false,false,KEY_F7},   //color6    // magenta
+                    {0,255,255,false,false,KEY_F8},    //color7   // cyan
+                    {255,128,0,false,false,KEY_F9},  //color8     // orange
+                    {255,0,0,false,false,KEY_F10},   //color9         // red
+                    {255,0,0,false,false,KEY_F10}   //color9         // red
                    };
  
 void setup()
